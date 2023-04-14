@@ -9,11 +9,17 @@
 </head>
 <body>
     <h1>Simple Cat Facts api</h1>
-    <p> <%= fact[0].fact %></p>
-    <button class="newFact">Generate cat fact!</button>
+    <ul class="factList">
+        <% for (i = 0; i < fact.length; i++) { %>
+        <li>
+            <p> <%= fact[i].fact %></p> 
+            <button class="delete">Delete</button>
+        </li>
+        <% } %>
+    </ul>
     <form action="/newFact" method="POST">
-        <input type="text" placeholder="quote" name="quote">
-        <button type="submit">Submit</button>
+        <input type="text" placeholder="quote" name="fact">
+        <button type="submit">Submit new cat fact</button>
     </form>
     <script src="js/main.js"></script>
 </body>
