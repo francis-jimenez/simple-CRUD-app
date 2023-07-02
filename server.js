@@ -1,7 +1,7 @@
 const express = require('express') //getting access to express
 const app = express() //using express
 const MongoClient = require('mongodb').MongoClient
-const PORT = 8000 //setting local port number
+const PORT = 3000 //setting local port number
 require('dotenv').config() //setting private env files
 
 let db,
