@@ -1,7 +1,7 @@
 const express = require('express') //getting access to express
 const app = express() //using express
 const MongoClient = require('mongodb').MongoClient
-const PORT = 2121 //setting local port number
+const PORT = 8000 //setting local port number
 require('dotenv').config() //setting private env files
 
 let db,
@@ -22,30 +22,33 @@ let db,
         app.use(express.json())
 
         app.get('/', async (req, res) => {
-            const catFacts = await db.collection('facts').find().toArray()
-            res.render('index.ejs', {fact: catFacts})
-            console.log(catFacts)
+            const catFacts = await quotesCollection.find().toArray()
+            res.render('index.ejs', {fact: catFacts})                
         })
-
-        app.get('/fact', async (req, res) => {
-            const catFacts = await db.collection('facts').find().toArray()
-            res.send(catFacts)
-            console.log(catFacts);
+        
+        app.get('/api', async(req, res) => {
+            const catFacts = await quotesCollection.find().toArray()
+            res.json(catFacts)     
         })
 
         app.post('/newFact', (req, res) => {
             quotesCollection.insertOne(req.body)
               .then(result => {
                 console.log(result)
-                location.reload()
+                res.redirect('/')
               })
               .catch(error => console.error(error))
-          })
-
-        app.delete('/deleteFact', (req, res) => {
-            quotesCollection.deleteOne(req.body)
+          }) 
+      
+          app.delete('/deleteItem', (request, response) => {
+            quotesCollection.deleteOne({fact: request.body.itemFromJS})
+            .then(result => {
+                console.log('Fact Deleted')
+                response.json('Fact Deleted')
+            }) 
+            .catch(error => console.error(error))
+             
         })
-
         app.listen(PORT, () => {
-            console.log('SERVER UP')
+            console.log('SERVER UP') 
         })

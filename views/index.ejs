@@ -8,15 +8,14 @@
     <title>Cat facts api</title>
 </head>
 <body>
-    <h1>Simple Cat Facts api</h1>
+     <h1>Simple Cat Facts api</h1>
     <ul class="factList">
-        <% for (i = 0; i < fact.length; i++) { %>
-        <li>
-            <p> <%= fact[i].fact %></p> 
-            <button class="delete">Delete</button>
+        <li class="item">
+            <span id="fact"></span>
+            <button id="deleteButton">Delete</button>
         </li>
-        <% } %>
     </ul>
+    <button id="next">Generate new fact</button>
     <form action="/newFact" method="POST">
         <input type="text" placeholder="quote" name="fact">
         <button type="submit">Submit new cat fact</button>
