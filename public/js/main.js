@@ -26,7 +26,7 @@ async function deleteItem() {
 let counter = 0
 async function nextFact() {
     try {
-        const response = await fetch ('http://localhost:8000/api')
+        const response = await fetch ('https://simple-crud-app-production.up.railway.app/api')
         const data = await response.json()
         document.querySelector('#deleteButton').style.display = 'flex';
         document.querySelector('form').style.display = 'flex';
