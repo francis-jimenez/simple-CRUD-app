@@ -49,6 +49,6 @@ let db,
             .catch(error => console.error(error))
              
         })
-        app.listen(PORT, () => {
+        app.listen(process.env.PORT || PORT, () => {
             console.log('SERVER UP') 
         })
