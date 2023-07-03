@@ -3,23 +3,25 @@ const app = express() //using express
 const MongoClient = require('mongodb').MongoClient
 const PORT = 3000 //setting local port number
 require('dotenv').config() //setting private env files
+const cors = require('cors')
 
 let db,
-    quotesCollection, //directing conection to database to env file
-    dbConnectionStr = process.env.DB_STRING,
-    dbName = 'catFact' //db name
+quotesCollection, //directing conection to database to env file
+dbConnectionStr = process.env.DB_STRING,
+dbName = 'catFact' //db name
 
-    MongoClient.connect(dbConnectionStr, { useUnifiedTopology: true }) //connecting to database and getting comfirmation.
-    .then(client => {
-        console.log(`Connected to ${dbName} Database`)
-        db = client.db(dbName)
-        quotesCollection = db.collection('facts')
-    })
-        // Move route handlers and any code that needs to access `db` inside this block
-        app.set('view engine', 'ejs')
-        app.use(express.static('public'))
-        app.use(express.urlencoded({extended : true}))
-        app.use(express.json())
+MongoClient.connect(dbConnectionStr, { useUnifiedTopology: true }) //connecting to database and getting comfirmation.
+.then(client => {
+    console.log(`Connected to ${dbName} Database`)
+    db = client.db(dbName)
+    quotesCollection = db.collection('facts')
+})
+// Move route handlers and any code that needs to access `db` inside this block
+app.set('view engine', 'ejs')
+app.use(express.static('public'))
+app.use(express.urlencoded({extended : true}))
+app.use(express.json())
+app.use(cors())
 
         app.get('/', async (req, res) => {
             const catFacts = await quotesCollection.find().toArray()
@@ -32,9 +34,9 @@ let db,
         })
 
         app.post('/newFact', (req, res) => {
-            quotesCollection.insertOne(req.body)
+            quotesCollection.insertOne({fact: req.body.fact})
               .then(result => {
-                console.log(result)
+                console.log(req.body)
                 res.redirect('/')
               })
               .catch(error => console.error(error))
